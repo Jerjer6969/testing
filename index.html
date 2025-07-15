@@ -1521,53 +1521,30 @@
         });
       }
 
-      // OAuth functions
-      function signInWithGoogle() {
-        // Initialize Google OAuth
-        // You would integrate with Google OAuth API here
-        console.log('Signing in with Google...');
-        
-        // Simulate OAuth flow
-        setTimeout(() => {
-          alert('Google OAuth integration would be implemented here. For demo purposes, this simulates a successful Google sign-in.');
-          closeSignInModal();
-          updateAuthState('google-user@example.com');
-        }, 1000);
+      // OAuth functions (real Supabase OAuth)
+      async function signInWithGoogle() {
+        const { error } = await window.supabase.auth.signIn({ provider: 'google' });
+        if (error) {
+          alert('Google sign-in failed: ' + error.message);
+        }
       }
-
-      function signInWithMicrosoft() {
-        // Initialize Microsoft OAuth
-        // You would integrate with Microsoft OAuth API here
-        console.log('Signing in with Microsoft...');
-        
-        // Simulate OAuth flow
-        setTimeout(() => {
-          alert('Microsoft OAuth integration would be implemented here. For demo purposes, this simulates a successful Microsoft sign-in.');
-          closeSignInModal();
-          updateAuthState('microsoft-user@example.com');
-        }, 1000);
+      async function signInWithMicrosoft() {
+        const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
+        if (error) {
+          alert('Microsoft sign-in failed: ' + error.message);
+        }
       }
-
-      function signUpWithGoogle() {
-        // Initialize Google OAuth for sign up
-        console.log('Signing up with Google...');
-        
-        setTimeout(() => {
-          alert('Google OAuth sign-up integration would be implemented here. For demo purposes, this simulates a successful Google sign-up.');
-          closeSignUpModal();
-          updateAuthState('google-user@example.com');
-        }, 1000);
+      async function signUpWithGoogle() {
+        const { error } = await window.supabase.auth.signIn({ provider: 'google' });
+        if (error) {
+          alert('Google sign-up failed: ' + error.message);
+        }
       }
-
-      function signUpWithMicrosoft() {
-        // Initialize Microsoft OAuth for sign up
-        console.log('Signing up with Microsoft...');
-        
-        setTimeout(() => {
-          alert('Microsoft OAuth sign-up integration would be implemented here. For demo purposes, this simulates a successful Microsoft sign-up.');
-          closeSignUpModal();
-          updateAuthState('microsoft-user@example.com');
-        }, 1000);
+      async function signUpWithMicrosoft() {
+        const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
+        if (error) {
+          alert('Microsoft sign-up failed: ' + error.message);
+        }
       }
 
       // Update UI based on authentication state
