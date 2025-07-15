@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OfficeWizard – Just Type What You Want</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="icon" type="image/png" href="wizard-hat.png" />
-      <style>
+    <style>
       html {
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
         background: #f9fafb;
@@ -1661,24 +1660,20 @@
         });
 
         // Form submissions with validation
-        document.getElementById('signUpForm').addEventListener('submit', function(e) {
+        document.getElementById('signUpForm').addEventListener('submit', async function(e) {
           e.preventDefault();
           clearFormErrors('signUpForm');
-          
           const formData = new FormData(this);
           const name = formData.get('name').trim();
           const email = formData.get('email').trim();
           const password = formData.get('password');
           const terms = formData.get('terms');
-          
           let hasErrors = false;
-          
           // Validation
           if (!name) {
             showError('signup-name', 'Full name is required');
             hasErrors = true;
           }
-          
           if (!email) {
             showError('signup-email', 'Email address is required');
             hasErrors = true;
@@ -1686,7 +1681,6 @@
             showError('signup-email', 'Please enter a valid email address');
             hasErrors = true;
           }
-          
           if (!password) {
             showError('signup-password', 'Password is required');
             hasErrors = true;
@@ -1694,62 +1688,43 @@
             showError('signup-password', 'Password must be at least 8 characters long');
             hasErrors = true;
           }
-          
           if (!terms) {
             alert('Please accept the Terms of Service and Privacy Policy');
             hasErrors = true;
           }
-          
           if (hasErrors) {
             return;
           }
-          
-          // Real API call to backend
           const submitButton = this.querySelector('button[type="submit"]');
           const originalText = submitButton.textContent;
           submitButton.textContent = 'Creating Account...';
           submitButton.disabled = true;
-          
-          fetch('/api/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password })
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // Store token in localStorage
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('user', JSON.stringify(data.user));
-              
-              alert(`Welcome to OfficeWizard, ${name}! Your account has been created successfully.`);
-              closeSignUpModal();
-              updateAuthState(email);
+          try {
+            const { data, error } = await supabase.auth.signUp({
+              email,
+              password,
+              options: { data: { full_name: name } }
+            });
+            if (error) {
+              alert('Sign up failed: ' + error.message);
             } else {
-              alert('Sign up failed: ' + data.error);
+              alert('Sign up successful! Please check your email to confirm.');
+              closeSignUpModal();
+              // Optionally update UI
             }
-          })
-          .catch(error => {
-            console.error('Signup error:', error);
-            alert('Network error. Please try again.');
-          })
-          .finally(() => {
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
-          });
+          } catch (err) {
+            alert('Network or unexpected error: ' + (err.message || err));
+          }
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
         });
-
-        document.getElementById('signInForm').addEventListener('submit', function(e) {
+        document.getElementById('signInForm').addEventListener('submit', async function(e) {
           e.preventDefault();
           clearFormErrors('signInForm');
-          
           const formData = new FormData(this);
           const email = formData.get('email').trim();
           const password = formData.get('password');
-          const remember = formData.get('remember');
-          
           let hasErrors = false;
-          
           // Validation
           if (!email) {
             showError('signin-email', 'Email address is required');
@@ -1758,51 +1733,53 @@
             showError('signin-email', 'Please enter a valid email address');
             hasErrors = true;
           }
-          
           if (!password) {
             showError('signin-password', 'Password is required');
             hasErrors = true;
           }
-          
           if (hasErrors) {
             return;
           }
-          
-          // Real API call to backend
           const submitButton = this.querySelector('button[type="submit"]');
           const originalText = submitButton.textContent;
           submitButton.textContent = 'Signing In...';
           submitButton.disabled = true;
-          
-          fetch('/api/signin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password, remember })
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.success) {
-              // Store token in localStorage
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('user', JSON.stringify(data.user));
-              
-              alert('Welcome back to OfficeWizard! You have been signed in successfully.');
-              closeSignInModal();
-              updateAuthState(email);
-            } else {
-              alert('Sign in failed: ' + data.error);
-            }
-          })
-          .catch(error => {
-            console.error('Signin error:', error);
-            alert('Network error. Please try again.');
-          })
-          .finally(() => {
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
-          });
+          // Supabase sign in
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) {
+            alert('Sign in failed: ' + error.message);
+          } else {
+            alert('Sign in successful!');
+            localStorage.setItem('token', data.session.access_token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            closeSignInModal();
+            updateAuthState(email);
+          }
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
         });
-
+        // Sign out function
+        async function signOut() {
+          await supabase.auth.signOut();
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          document.getElementById('profileMenuContainer').style.display = 'none';
+          document.getElementById('authButtons').style.display = 'flex';
+          document.getElementById('profileDropdown').classList.add('hidden');
+          alert('You have been signed out successfully.');
+        }
+        // Check authentication state on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+          // Check if user is already logged in (Supabase)
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            updateAuthState(user.email);
+          } else {
+            document.getElementById('profileMenuContainer').style.display = 'none';
+            document.getElementById('authButtons').style.display = 'flex';
+          }
+          // ...existing code for modals and validation...
+        });
         // Add OAuth button event listeners
         document.querySelectorAll('[onclick*="signInWithGoogle"]').forEach(btn => {
           btn.onclick = signInWithGoogle;
@@ -1849,6 +1826,23 @@
       function openSecurity() { alert('Open Security Settings (placeholder)'); }
       function openSupport() { alert('Open Support & Help (placeholder)'); }
       function openFeedback() { alert('Open Feedback (placeholder)'); }
+    </script>
+    <!-- Move Supabase CDN and initialization to the end -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // Initialize Supabase client
+      const supabase = supabase.createClient(
+        'https://bgusnxxfyojzfhanqwgs.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndXNueHhmeW9qemZoYW5xd2dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MDQ1MTgsImV4cCI6MjA2ODE4MDUxOH0.3n0uoT0lbAN7gLXfOkEvvwOWegZw8CVI-2JJMq4XHl0'
+      );
+      // All code that uses supabase should be after this point or inside DOMContentLoaded
+    </script>
+    <script>
+      // Wrap all code that uses supabase in DOMContentLoaded to ensure supabase is defined
+      document.addEventListener('DOMContentLoaded', function() {
+        // ...existing modal, form, and auth logic from previous scripts...
+        // (Copy all previous code that uses supabase here, or ensure it is after this script)
+      });
     </script>
   </body>
 </html>   
