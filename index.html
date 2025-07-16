@@ -2035,6 +2035,7 @@
             const { data, error } = await window.supabase.auth.signIn({ email, password });
             console.log('Sign in error:', error);
             console.log('Sign in data:', data);
+            console.log('Data structure:', JSON.stringify(data, null, 2));
             if (error) {
               // Provide more specific error messages
               let errorMessage = 'Sign in failed: ';
@@ -2050,14 +2051,28 @@
                 errorMessage += error.message;
               }
               alert(errorMessage);
-            } else if (data && data.session) {
-              alert('Sign in successful!');
-              localStorage.setItem('token', data.session.access_token);
-              localStorage.setItem('user', JSON.stringify(data.user));
-              closeSignInModal();
-              updateAuthState(email);
+            } else if (data && data.user) {
+              // For Supabase v1, the session might be in a different structure
+              let accessToken = null;
+              if (data.session && data.session.access_token) {
+                accessToken = data.session.access_token;
+              } else if (data.access_token) {
+                accessToken = data.access_token;
+              } else if (data.token) {
+                accessToken = data.token;
+              }
+              
+              if (accessToken) {
+                alert('Sign in successful!');
+                localStorage.setItem('token', accessToken);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                closeSignInModal();
+                updateAuthState(email);
+              } else {
+                alert('Sign in successful but no access token received. Please try again.');
+              }
             } else {
-              alert('Sign in successful but no session data received. Please try again.');
+              alert('Sign in successful but no user data received. Please try again.');
             }
           } catch (err) {
             alert('Network or unexpected error: ' + (err.message || err));
