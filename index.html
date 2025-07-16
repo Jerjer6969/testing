@@ -1985,10 +1985,28 @@
               password,
               options: { data: { full_name: name } }
             });
+            console.log('Sign up error:', error);
+            console.log('Sign up data:', data);
             if (error) {
-              alert('Sign up failed: ' + error.message);
-            } else {
+              // Provide more specific error messages for sign up
+              let errorMessage = 'Sign up failed: ';
+              if (error.message.includes('User already registered')) {
+                errorMessage += 'An account with this email already exists. Please sign in instead.';
+              } else if (error.message.includes('Password should be at least')) {
+                errorMessage += 'Password is too short. Please use at least 6 characters.';
+              } else if (error.message.includes('Invalid email')) {
+                errorMessage += 'Please enter a valid email address.';
+              } else if (error.message.includes('Email rate limit exceeded')) {
+                errorMessage += 'Too many sign-up attempts. Please wait before trying again.';
+              } else {
+                errorMessage += error.message;
+              }
+              alert(errorMessage);
+            } else if (data && data.user) {
               alert('Sign up successful! Please check your email to confirm.');
+              closeSignUpModal();
+            } else {
+              alert('Sign up successful but no user data received. Please check your email to confirm.');
               closeSignUpModal();
             }
           } catch (err) {
@@ -2016,14 +2034,30 @@
             // Use signIn instead of signInWithPassword for Supabase v1
             const { data, error } = await window.supabase.auth.signIn({ email, password });
             console.log('Sign in error:', error);
+            console.log('Sign in data:', data);
             if (error) {
-              alert('Sign in failed: ' + error.message);
-            } else {
+              // Provide more specific error messages
+              let errorMessage = 'Sign in failed: ';
+              if (error.message.includes('Invalid login credentials')) {
+                errorMessage += 'Wrong email or password. Please check your credentials and try again.';
+              } else if (error.message.includes('Email not confirmed')) {
+                errorMessage += 'Please check your email and click the confirmation link before signing in.';
+              } else if (error.message.includes('Too many requests')) {
+                errorMessage += 'Too many failed attempts. Please wait a few minutes before trying again.';
+              } else if (error.message.includes('User not found')) {
+                errorMessage += 'No account found with this email. Please sign up first.';
+              } else {
+                errorMessage += error.message;
+              }
+              alert(errorMessage);
+            } else if (data && data.session) {
               alert('Sign in successful!');
               localStorage.setItem('token', data.session.access_token);
               localStorage.setItem('user', JSON.stringify(data.user));
               closeSignInModal();
               updateAuthState(email);
+            } else {
+              alert('Sign in successful but no session data received. Please try again.');
             }
           } catch (err) {
             alert('Network or unexpected error: ' + (err.message || err));
