@@ -1797,6 +1797,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Supabase
         window.supabase = supabase.createClient(
           'https://bgusnxxfyojzfhanqwgs.supabase.co',
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJndXNueHhmeW9qemZoYW5xd2dzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2MDQ1MTgsImV4cCI6MjA2ODE4MDUxOH0.3n0uoT0lbAN7gLXfOkEvvwOWegZw8CVI-2JJMq4XHl0'
@@ -1804,13 +1805,236 @@
         // Test output
         console.log('supabase:', window.supabase);
         console.log('supabase.auth:', window.supabase.auth);
-      });
-    </script>
-    <script>
-      // Wrap all code that uses supabase in DOMContentLoaded to ensure supabase is defined
-      document.addEventListener('DOMContentLoaded', function() {
-        // ...existing modal, form, and auth logic from previous scripts...
-        // (Copy all previous code that uses supabase here, or ensure it is after this script)
+
+        // Modal functions
+        function openSignUpModal() {
+          document.getElementById('signUpModal').classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+          document.getElementById('signUpForm').reset();
+          clearFormErrors('signUpForm');
+        }
+        function closeSignUpModal() {
+          document.getElementById('signUpModal').classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        }
+        function openSignInModal() {
+          document.getElementById('signInModal').classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+          document.getElementById('signInForm').reset();
+          clearFormErrors('signInForm');
+        }
+        function closeSignInModal() {
+          document.getElementById('signInModal').classList.add('hidden');
+          document.body.style.overflow = 'auto';
+        }
+        function switchToSignIn() { closeSignUpModal(); openSignInModal(); }
+        function switchToSignUp() { closeSignInModal(); openSignUpModal(); }
+
+        // Form validation and error handling
+        function validateEmail(email) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+        }
+        function validatePassword(password) { return password.length >= 8; }
+        function showError(fieldId, message) {
+          const field = document.getElementById(fieldId);
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'text-red-500 text-sm mt-1';
+          errorDiv.id = fieldId + '-error';
+          errorDiv.textContent = message;
+          const existingError = document.getElementById(fieldId + '-error');
+          if (existingError) { existingError.remove(); }
+          field.parentNode.appendChild(errorDiv);
+          field.classList.add('border-red-500');
+          field.classList.remove('border-gray-300');
+        }
+        function clearError(fieldId) {
+          const field = document.getElementById(fieldId);
+          const errorDiv = document.getElementById(fieldId + '-error');
+          if (errorDiv) { errorDiv.remove(); }
+          field.classList.remove('border-red-500');
+          field.classList.add('border-gray-300');
+        }
+        function clearFormErrors(formId) {
+          const form = document.getElementById(formId);
+          const errorDivs = form.querySelectorAll('[id$="-error"]');
+          errorDivs.forEach(div => div.remove());
+          const fields = form.querySelectorAll('input');
+          fields.forEach(field => {
+            field.classList.remove('border-red-500');
+            field.classList.add('border-gray-300');
+          });
+        }
+
+        // OAuth functions (real Supabase OAuth)
+        async function signInWithGoogle() {
+          const { error } = await window.supabase.auth.signIn({ provider: 'google' });
+          if (error) {
+            alert('Google sign-in failed: ' + error.message);
+          }
+        }
+        async function signInWithMicrosoft() {
+          const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
+          if (error) {
+            alert('Microsoft sign-in failed: ' + error.message);
+          }
+        }
+        async function signUpWithGoogle() {
+          const { error } = await window.supabase.auth.signIn({ provider: 'google' });
+          if (error) {
+            alert('Google sign-up failed: ' + error.message);
+          }
+        }
+        async function signUpWithMicrosoft() {
+          const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
+          if (error) {
+            alert('Microsoft sign-up failed: ' + error.message);
+          }
+        }
+
+        // Update UI based on authentication state
+        function updateAuthState(email) {
+          document.getElementById('authButtons').style.display = 'none';
+          document.getElementById('profileMenuContainer').style.display = 'flex';
+        }
+        async function signOut() {
+          await window.supabase.auth.signOut();
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          document.getElementById('profileMenuContainer').style.display = 'none';
+          document.getElementById('authButtons').style.display = 'flex';
+          document.getElementById('profileDropdown').classList.add('hidden');
+          alert('You have been signed out successfully.');
+        }
+        function toggleProfileDropdown() {
+          const dropdown = document.getElementById('profileDropdown');
+          dropdown.classList.toggle('hidden');
+        }
+        document.addEventListener('click', function(event) {
+          const profileMenu = document.getElementById('profileMenuContainer');
+          const dropdown = document.getElementById('profileDropdown');
+          if (!profileMenu.contains(event.target)) {
+            dropdown.classList.add('hidden');
+          }
+        });
+        function checkAuthState() {
+          const token = localStorage.getItem('token');
+          const user = localStorage.getItem('user');
+          if (token && user) {
+            updateAuthState(JSON.parse(user).email);
+          } else {
+            document.getElementById('profileMenuContainer').style.display = 'none';
+            document.getElementById('authButtons').style.display = 'flex';
+          }
+        }
+        // Close modals when clicking outside
+        checkAuthState();
+        const signUpModal = document.getElementById('signUpModal');
+        const signInModal = document.getElementById('signInModal');
+        signUpModal.addEventListener('click', function(e) {
+          if (e.target === signUpModal) { closeSignUpModal(); }
+        });
+        signInModal.addEventListener('click', function(e) {
+          if (e.target === signInModal) { closeSignInModal(); }
+        });
+        document.getElementById('signup-email').addEventListener('blur', function() {
+          if (this.value && !validateEmail(this.value)) {
+            showError('signup-email', 'Please enter a valid email address');
+          } else {
+            clearError('signup-email');
+          }
+        });
+        document.getElementById('signup-password').addEventListener('blur', function() {
+          if (this.value && !validatePassword(this.value)) {
+            showError('signup-password', 'Password must be at least 8 characters long');
+          } else {
+            clearError('signup-password');
+          }
+        });
+        document.getElementById('signin-email').addEventListener('blur', function() {
+          if (this.value && !validateEmail(this.value)) {
+            showError('signin-email', 'Please enter a valid email address');
+          } else {
+            clearError('signin-email');
+          }
+        });
+        // Form submissions with validation
+        document.getElementById('signUpForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          clearFormErrors('signUpForm');
+          const formData = new FormData(this);
+          const name = formData.get('name').trim();
+          const email = formData.get('email').trim();
+          const password = formData.get('password');
+          const terms = formData.get('terms');
+          let hasErrors = false;
+          if (!name) { showError('signup-name', 'Full name is required'); hasErrors = true; }
+          if (!email) { showError('signup-email', 'Email address is required'); hasErrors = true; }
+          else if (!validateEmail(email)) { showError('signup-email', 'Please enter a valid email address'); hasErrors = true; }
+          if (!password) { showError('signup-password', 'Password is required'); hasErrors = true; }
+          else if (!validatePassword(password)) { showError('signup-password', 'Password must be at least 8 characters long'); hasErrors = true; }
+          if (!terms) { alert('Please accept the Terms of Service and Privacy Policy'); hasErrors = true; }
+          if (hasErrors) { return; }
+          const submitButton = this.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+          submitButton.textContent = 'Creating Account...';
+          submitButton.disabled = true;
+          try {
+            const { data, error } = await window.supabase.auth.signUp({
+              email,
+              password,
+              options: { data: { full_name: name } }
+            });
+            if (error) {
+              alert('Sign up failed: ' + error.message);
+            } else {
+              alert('Sign up successful! Please check your email to confirm.');
+              closeSignUpModal();
+            }
+          } catch (err) {
+            alert('Network or unexpected error: ' + (err.message || err));
+          }
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        });
+        document.getElementById('signInForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          clearFormErrors('signInForm');
+          const formData = new FormData(this);
+          const email = formData.get('email').trim();
+          const password = formData.get('password');
+          let hasErrors = false;
+          if (!email) { showError('signin-email', 'Email address is required'); hasErrors = true; }
+          else if (!validateEmail(email)) { showError('signin-email', 'Please enter a valid email address'); hasErrors = true; }
+          if (!password) { showError('signin-password', 'Password is required'); hasErrors = true; }
+          if (hasErrors) { return; }
+          const submitButton = this.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+          submitButton.textContent = 'Signing In...';
+          submitButton.disabled = true;
+          try {
+            const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+            console.log('Sign in error:', error);
+            if (error) {
+              alert('Sign in failed: ' + error.message);
+            } else {
+              alert('Sign in successful!');
+              localStorage.setItem('token', data.session.access_token);
+              localStorage.setItem('user', JSON.stringify(data.user));
+              closeSignInModal();
+              updateAuthState(email);
+            }
+          } catch (err) {
+            alert('Network or unexpected error: ' + (err.message || err));
+          }
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        });
+        // Add OAuth button event listeners
+        document.getElementById('google-signup-btn').onclick = signUpWithGoogle;
+        document.getElementById('microsoft-signup-btn').onclick = signUpWithMicrosoft;
+        document.getElementById('google-signin-btn').onclick = signInWithGoogle;
+        document.getElementById('microsoft-signin-btn').onclick = signInWithMicrosoft;
       });
     </script>
   </body>
