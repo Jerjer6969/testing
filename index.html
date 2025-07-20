@@ -253,34 +253,13 @@
         font-weight: 500;
         color: #222;
       }
+      /* No custom checkbox size, use Tailwind only */
       .auth-form input[type="checkbox"] {
-        width: 1.25em;
-        height: 1.25em;
-        appearance: none;
-        -webkit-appearance: none;
-        border: 2px solid #d1d5db;
-        border-radius: 0.25em;
-        background: #fff;
-        display: inline-block;
-        vertical-align: middle;
-        position: relative;
+        width: 1.1em;
+        height: 1.1em;
         accent-color: #16a34a;
-        margin-right: 0.6em;
-        transition: border-color 0.15s, background 0.15s;
-      }
-      .auth-form input[type="checkbox"]:checked {
-        background: #16a34a;
-        border-color: #16a34a;
-      }
-      .auth-form input[type="checkbox"]:focus {
-        outline: 2px solid #16a34a;
-        outline-offset: 1px;
-      }
-      .auth-form input[type="checkbox"]::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 100%;
+        margin-right: 0.5em;
+        vertical-align: middle;
       }
       .auth-form button[type="submit"] {
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
@@ -1458,20 +1437,24 @@
             <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input type="email" id="signup-email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
 				</div>
-          <div>
+          <div class="relative">
             <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input type="password" id="signup-password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            <input type="password" id="signup-password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10">
+            <button type="button" tabindex="-1" class="absolute right-3 text-gray-400 hover:text-gray-700 focus:outline-none p-0 m-0" style="top: 65%; transform: translateY(-50%);" id="toggle-signup-password">
+              <svg id="signup-password-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 align-middle block" style="display: block; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+            </button>
           </div>
-          <div>
+          <div class="relative">
             <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-            <input type="password" id="signup-confirm-password" name="confirm_password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            <input type="password" id="signup-confirm-password" name="confirm_password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10">
+            <button type="button" tabindex="-1" class="absolute right-3 text-gray-400 hover:text-gray-700 focus:outline-none p-0 m-0" style="top: 65%; transform: translateY(-50%);" id="toggle-signup-confirm-password">
+              <svg id="signup-confirm-password-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 align-middle block" style="display: block; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+            </button>
           </div>
           <div class="flex items-center mb-2">
-            <input type="checkbox" id="show-signup-password" class="h-5 w-5 accent-green-600">
-            <label for="show-signup-password" class="font-medium text-base text-gray-800 select-none cursor-pointer">Show Password</label>
-          </div>
-          <div class="flex items-center mb-2">
-            <input type="checkbox" id="signup-terms" name="terms" required class="h-5 w-5 accent-green-600">
+            <span class="inline-flex items-center" style="height: 20px;">
+              <input type="checkbox" id="signup-terms" name="terms" required class="w-4 h-4 text-green-600 focus:ring-green-500 border-gray-300 rounded" style="min-width: 1rem; min-height: 1rem;">
+            </span>
             <label for="signup-terms" class="font-medium text-base text-gray-800 select-none cursor-pointer">
               I agree to the <a href="#" class="text-green-600 hover:text-green-700">Terms of Service</a> and <a href="#" class="text-green-600 hover:text-green-700">Privacy Policy</a>
             </label>
@@ -1488,7 +1471,7 @@
 
     <!-- Sign In Modal -->
     <div id="signInModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-      <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900">Sign In</h2>
           <button onclick="closeSignInModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
@@ -1514,17 +1497,18 @@
             <label for="signin-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input type="email" id="signin-email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
           </div>
-          <div>
+          <div class="relative">
             <label for="signin-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input type="password" id="signin-password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
-          </div>
-          <div class="flex items-center gap-2 mb-2">
-            <input type="checkbox" id="show-signin-password" class="h-5 w-5 accent-green-600">
-            <label for="show-signin-password" class="font-medium text-base text-gray-800 select-none cursor-pointer">Show Password</label>
+            <input type="password" id="signin-password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pr-10">
+            <button type="button" tabindex="-1" class="absolute right-3 text-gray-400 hover:text-gray-700 focus:outline-none p-0 m-0" style="top: 65%; transform: translateY(-50%);" id="toggle-signin-password">
+              <svg id="signin-password-eye" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 align-middle block" style="display: block; margin-top: 2px;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+            </button>
           </div>
           <div id="signin-error-box" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-2 text-sm"></div>
           <div class="flex items-center mb-2">
-            <input type="checkbox" id="signin-remember" name="remember" class="h-5 w-5 accent-green-600">
+            <span class="inline-flex items-center" style="height: 20px;">
+              <input type="checkbox" id="signin-remember" name="remember" class="w-4 h-4 text-green-600 focus:ring-green-500 border-gray-300 rounded" style="min-width: 1rem; min-height: 1rem;">
+            </span>
             <label for="signin-remember" class="font-medium text-base text-gray-800 select-none cursor-pointer">Remember me</label>
           </div>
           <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-200">
@@ -2302,6 +2286,29 @@
       document.getElementById('show-signin-password').addEventListener('change', function() {
         const pwd = document.getElementById('signin-password');
         pwd.type = this.checked ? 'text' : 'password';
+      });
+    </script>
+    <script>
+      // Show/hide password logic for sign up (eye icon)
+      function togglePasswordVisibility(inputId, eyeId) {
+        const input = document.getElementById(inputId);
+        const eye = document.getElementById(eyeId);
+        if (input.type === 'password') {
+          input.type = 'text';
+          eye.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.042-3.292m3.087-2.727A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.676 5.568M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />';
+        } else {
+          input.type = 'password';
+          eye.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />';
+        }
+      }
+      document.getElementById('toggle-signup-password').addEventListener('click', function() {
+        togglePasswordVisibility('signup-password', 'signup-password-eye');
+      });
+      document.getElementById('toggle-signup-confirm-password').addEventListener('click', function() {
+        togglePasswordVisibility('signup-confirm-password', 'signup-confirm-password-eye');
+      });
+      document.getElementById('toggle-signin-password').addEventListener('click', function() {
+        togglePasswordVisibility('signin-password', 'signin-password-eye');
       });
     </script>
   </body>
