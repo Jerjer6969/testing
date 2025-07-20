@@ -232,7 +232,99 @@
 					opacity: 1;
         transform: translateY(0) scale(1);
 				}
-			</style>
+      /* Unified form styles */
+      .auth-form input[type="text"],
+      .auth-form input[type="email"],
+      .auth-form input[type="password"] {
+        width: 100%;
+        padding: 0.75em 1em;
+        font-size: 1.08rem;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-weight: 400;
+        border-radius: 0.5rem;
+        border: 1px solid #d1d5db;
+        box-sizing: border-box;
+        margin-bottom: 0;
+        height: 2.75em;
+      }
+      .auth-form label {
+        font-size: 1rem;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-weight: 500;
+        color: #222;
+      }
+      .auth-form input[type="checkbox"] {
+        width: 1.25em;
+        height: 1.25em;
+        appearance: none;
+        -webkit-appearance: none;
+        border: 2px solid #d1d5db;
+        border-radius: 0.25em;
+        background: #fff;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        accent-color: #16a34a;
+        margin-right: 0.6em;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .auth-form input[type="checkbox"]:checked {
+        background: #16a34a;
+        border-color: #16a34a;
+      }
+      .auth-form input[type="checkbox"]:focus {
+        outline: 2px solid #16a34a;
+        outline-offset: 1px;
+      }
+      .auth-form input[type="checkbox"]::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .auth-form button[type="submit"] {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        padding: 0.85em 2.5em;
+        border-radius: 9999px;
+        width: 100%;
+        margin-top: 0.5em;
+      }
+      .auth-form .flex.items-center label {
+        font-size: 1rem;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        font-weight: 400;
+        color: #222;
+      }
+      .auth-form .flex.items-center {
+        gap: 0.75em;
+      }
+      .auth-form .mb-2 {
+        margin-bottom: 0.75em !important;
+      }
+      .auth-form .mb-4 {
+        margin-bottom: 1.25em !important;
+      }
+      .auth-form .text-sm {
+        font-size: 0.98rem;
+      }
+      .auth-form .font-medium {
+        font-weight: 500;
+      }
+      .auth-form .font-bold {
+        font-weight: 700;
+      }
+      .auth-form .rounded-lg {
+        border-radius: 0.5rem;
+      }
+      .auth-form .rounded {
+        border-radius: 0.5rem;
+      }
+      .auth-form .rounded-full {
+        border-radius: 9999px;
+      }
+    </style>
     <script>
       // Simple accordion logic
       document.addEventListener('DOMContentLoaded', function() {
@@ -1336,7 +1428,7 @@
 
     <!-- Sign Up Modal -->
     <div id="signUpModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-      <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-gray-900">Sign Up for Free</h2>
           <button onclick="closeSignUpModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
@@ -1344,20 +1436,20 @@
         <!-- OAuth Shortcuts -->
         <div class="space-y-3 mb-6">
           <button type="button" id="google-signup-btn" onclick="signUpWithGoogle()" class="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition font-semibold text-gray-700" style="box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5" />
-            Sign up with Google
-					</button>
+            <span class="flex items-center"><img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-6 w-6 object-contain" /></span>
+            <span>Sign up with Google</span>
+          </button>
           <button type="button" id="microsoft-signup-btn" onclick="signUpWithMicrosoft()" class="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition font-semibold text-gray-700" style="box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="w-5 h-5" />
+            <span class="flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="h-6 w-6 object-contain" /></span>
             <span>Sign up with Microsoft</span>
-					</button>
-				</div>
+          </button>
+        </div>
         <div class="flex items-center mb-6">
           <div class="flex-grow h-px bg-gray-200"></div>
           <span class="mx-3 text-gray-400 text-sm">or</span>
           <div class="flex-grow h-px bg-gray-200"></div>
 					</div>
-        <form id="signUpForm" class="space-y-4">
+        <form id="signUpForm" class="space-y-4 auth-form">
           <div>
             <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input type="text" id="signup-name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
@@ -1370,9 +1462,17 @@
             <label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input type="password" id="signup-password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
           </div>
-          <div class="flex items-center">
-            <input type="checkbox" id="signup-terms" name="terms" required class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
-            <label for="signup-terms" class="ml-2 block text-sm text-gray-700">
+          <div>
+            <label for="signup-confirm-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" name="confirm_password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
+          </div>
+          <div class="flex items-center mb-2">
+            <input type="checkbox" id="show-signup-password" class="h-5 w-5 accent-green-600">
+            <label for="show-signup-password" class="font-medium text-base text-gray-800 select-none cursor-pointer">Show Password</label>
+          </div>
+          <div class="flex items-center mb-2">
+            <input type="checkbox" id="signup-terms" name="terms" required class="h-5 w-5 accent-green-600">
+            <label for="signup-terms" class="font-medium text-base text-gray-800 select-none cursor-pointer">
               I agree to the <a href="#" class="text-green-600 hover:text-green-700">Terms of Service</a> and <a href="#" class="text-green-600 hover:text-green-700">Privacy Policy</a>
             </label>
           </div>
@@ -1396,11 +1496,11 @@
         <!-- OAuth Shortcuts -->
         <div class="space-y-3 mb-6">
           <button type="button" id="google-signin-btn" onclick="signInWithGoogle()" class="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition font-semibold text-gray-700" style="box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5" />
-            Sign in with Google
+            <span class="flex items-center"><img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-6 w-6 object-contain" /></span>
+            <span>Sign in with Google</span>
           </button>
           <button type="button" id="microsoft-signin-btn" onclick="signInWithMicrosoft()" class="w-full flex items-center justify-center gap-3 py-2 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition font-semibold text-gray-700" style="box-shadow: 0 1px 2px rgba(0,0,0,0.03);">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="w-5 h-5" />
+            <span class="flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft" class="h-6 w-6 object-contain" /></span>
             <span>Sign in with Microsoft</span>
           </button>
         </div>
@@ -1409,7 +1509,7 @@
           <span class="mx-3 text-gray-400 text-sm">or</span>
           <div class="flex-grow h-px bg-gray-200"></div>
         </div>
-        <form id="signInForm" class="space-y-4">
+        <form id="signInForm" class="space-y-4 auth-form">
           <div>
             <label for="signin-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input type="email" id="signin-email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
@@ -1418,12 +1518,14 @@
             <label for="signin-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input type="password" id="signin-password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
           </div>
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input type="checkbox" id="signin-remember" name="remember" class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
-              <label for="signin-remember" class="ml-2 block text-sm text-gray-700">Remember me</label>
-            </div>
-            <a href="#" class="text-sm text-green-600 hover:text-green-700">Forgot password?</a>
+          <div class="flex items-center gap-2 mb-2">
+            <input type="checkbox" id="show-signin-password" class="h-5 w-5 accent-green-600">
+            <label for="show-signin-password" class="font-medium text-base text-gray-800 select-none cursor-pointer">Show Password</label>
+          </div>
+          <div id="signin-error-box" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-2 text-sm"></div>
+          <div class="flex items-center mb-2">
+            <input type="checkbox" id="signin-remember" name="remember" class="h-5 w-5 accent-green-600">
+            <label for="signin-remember" class="font-medium text-base text-gray-800 select-none cursor-pointer">Remember me</label>
           </div>
           <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition duration-200">
             Sign In
@@ -1449,6 +1551,14 @@
       function closeSignUpModal() {
         document.getElementById('signUpModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
+        // Reset the form fields
+        const form = document.getElementById('signUpForm');
+        form.reset();
+        clearFormErrors('signUpForm');
+        // Reset the submit button
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.textContent = 'Create Account';
+        submitButton.disabled = false;
       }
 
       function openSignInModal() {
@@ -1462,6 +1572,20 @@
       function closeSignInModal() {
         document.getElementById('signInModal').classList.add('hidden');
         document.body.style.overflow = 'auto';
+        // Reset the form fields
+        const form = document.getElementById('signInForm');
+        form.reset();
+        clearFormErrors('signInForm');
+        // Reset the submit button
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.textContent = 'Sign In';
+        submitButton.disabled = false;
+        // Hide the error box
+        const errorBox = document.getElementById('signin-error-box');
+        if (errorBox) {
+          errorBox.classList.add('hidden');
+          errorBox.textContent = '';
+        }
       }
 
       function switchToSignIn() {
@@ -1647,6 +1771,7 @@
           const name = formData.get('name').trim();
           const email = formData.get('email').trim();
           const password = formData.get('password');
+          const confirmPassword = formData.get('confirm_password');
           const terms = formData.get('terms');
           let hasErrors = false;
           // Validation
@@ -1666,6 +1791,13 @@
             hasErrors = true;
           } else if (!validatePassword(password)) {
             showError('signup-password', 'Password must be at least 8 characters long');
+            hasErrors = true;
+          }
+          if (!confirmPassword) {
+            showError('signup-confirm-password', 'Please confirm your password');
+            hasErrors = true;
+          } else if (password !== confirmPassword) {
+            showError('signup-confirm-password', 'Passwords do not match');
             hasErrors = true;
           }
           if (!terms) {
@@ -1701,6 +1833,9 @@
         document.getElementById('signInForm').addEventListener('submit', async function(e) {
           e.preventDefault();
           clearFormErrors('signInForm');
+          // Hide the error box on submit
+          document.getElementById('signin-error-box').classList.add('hidden');
+          document.getElementById('signin-error-box').textContent = '';
           const formData = new FormData(this);
           const email = formData.get('email').trim();
           const password = formData.get('password');
@@ -1724,19 +1859,65 @@
           const originalText = submitButton.textContent;
           submitButton.textContent = 'Signing In...';
           submitButton.disabled = true;
-          // Supabase sign in
-          const { data, error } = await window.supabase.auth.signIn({ email, password });
-          if (error) {
-            alert('Sign in failed: ' + error.message);
-          } else {
-            alert('Sign in successful!');
-            localStorage.setItem('token', data.session.access_token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            closeSignInModal();
-            updateAuthState(email);
+          try {
+            const { data, error } = await window.supabase.auth.signIn({ email, password });
+            console.log('Sign in error:', error);
+            console.log('Sign in data:', data);
+            console.log('Data structure:', JSON.stringify(data, null, 2));
+            if (error) {
+              // Provide more specific error messages
+              let errorMessage = '';
+              if (error.message.includes('Invalid login credentials')) {
+                errorMessage = 'Incorrect email or password.';
+              } else if (error.message.includes('Email not confirmed')) {
+                errorMessage = 'Please check your email and click the confirmation link before signing in.';
+              } else if (error.message.includes('Too many requests')) {
+                errorMessage = 'Too many failed attempts. Please wait a few minutes before trying again.';
+              } else if (error.message.includes('User not found')) {
+                errorMessage = 'No account found with this email. Please sign up first.';
+              } else {
+                errorMessage = 'Sign in failed: ' + error.message;
+              }
+              // Show the error box
+              const errorBox = document.getElementById('signin-error-box');
+              errorBox.textContent = errorMessage;
+              errorBox.classList.remove('hidden');
+            } else if (data && data.user) {
+              // For Supabase v1, the session might be in a different structure
+              let accessToken = null;
+              if (data.session && data.session.access_token) {
+                accessToken = data.session.access_token;
+              } else if (data.access_token) {
+                accessToken = data.access_token;
+              } else if (data.token) {
+                accessToken = data.token;
+              }
+              if (accessToken) {
+                alert('Sign in successful!');
+                localStorage.setItem('token', accessToken);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                closeSignInModal();
+                updateAuthState(email);
+              } else {
+                alert('Sign in successful but no access token received. Please try again.');
+              }
+            } else {
+              alert('Sign in successful but no user data received. Please try again.');
+            }
+          } catch (err) {
+            alert('Network or unexpected error: ' + (err.message || err));
           }
           submitButton.textContent = originalText;
           submitButton.disabled = false;
+        });
+        // Hide error box when user starts typing
+        document.getElementById('signin-email').addEventListener('input', function() {
+          document.getElementById('signin-error-box').classList.add('hidden');
+          document.getElementById('signin-error-box').textContent = '';
+        });
+        document.getElementById('signin-password').addEventListener('input', function() {
+          document.getElementById('signin-error-box').classList.add('hidden');
+          document.getElementById('signin-error-box').textContent = '';
         });
         // Sign out function
         async function signOut() {
@@ -1969,6 +2150,7 @@
           const name = formData.get('name').trim();
           const email = formData.get('email').trim();
           const password = formData.get('password');
+          const confirmPassword = formData.get('confirm_password');
           const terms = formData.get('terms');
           let hasErrors = false;
           if (!name) { showError('signup-name', 'Full name is required'); hasErrors = true; }
@@ -1976,6 +2158,8 @@
           else if (!validateEmail(email)) { showError('signup-email', 'Please enter a valid email address'); hasErrors = true; }
           if (!password) { showError('signup-password', 'Password is required'); hasErrors = true; }
           else if (!validatePassword(password)) { showError('signup-password', 'Password must be at least 8 characters long'); hasErrors = true; }
+          if (!confirmPassword) { showError('signup-confirm-password', 'Please confirm your password'); hasErrors = true; }
+          else if (password !== confirmPassword) { showError('signup-confirm-password', 'Passwords do not match'); hasErrors = true; }
           if (!terms) { alert('Please accept the Terms of Service and Privacy Policy'); hasErrors = true; }
           if (hasErrors) { return; }
           const submitButton = this.querySelector('button[type="submit"]');
@@ -2021,10 +2205,14 @@
         document.getElementById('signInForm').addEventListener('submit', async function(e) {
           e.preventDefault();
           clearFormErrors('signInForm');
+          // Hide the error box on submit
+          document.getElementById('signin-error-box').classList.add('hidden');
+          document.getElementById('signin-error-box').textContent = '';
           const formData = new FormData(this);
           const email = formData.get('email').trim();
           const password = formData.get('password');
           let hasErrors = false;
+          // Validation
           if (!email) { showError('signin-email', 'Email address is required'); hasErrors = true; }
           else if (!validateEmail(email)) { showError('signin-email', 'Please enter a valid email address'); hasErrors = true; }
           if (!password) { showError('signin-password', 'Password is required'); hasErrors = true; }
@@ -2083,11 +2271,37 @@
           submitButton.textContent = originalText;
           submitButton.disabled = false;
         });
+        // Hide error box when user starts typing
+        document.getElementById('signin-email').addEventListener('input', function() {
+          document.getElementById('signin-error-box').classList.add('hidden');
+          document.getElementById('signin-error-box').textContent = '';
+        });
+        document.getElementById('signin-password').addEventListener('input', function() {
+          document.getElementById('signin-error-box').classList.add('hidden');
+          document.getElementById('signin-error-box').textContent = '';
+        });
         // Add OAuth button event listeners
         document.getElementById('google-signup-btn').onclick = signUpWithGoogle;
         document.getElementById('microsoft-signup-btn').onclick = signUpWithMicrosoft;
         document.getElementById('google-signin-btn').onclick = signInWithGoogle;
         document.getElementById('microsoft-signin-btn').onclick = signInWithMicrosoft;
+      });
+    </script>
+    <!-- Show/hide password logic for sign up -->
+    <script>
+      document.getElementById('show-signup-password').addEventListener('change', function() {
+        const pwd1 = document.getElementById('signup-password');
+        const pwd2 = document.getElementById('signup-confirm-password');
+        const type = this.checked ? 'text' : 'password';
+        pwd1.type = type;
+        pwd2.type = type;
+      });
+    </script>
+    <!-- Show/hide password logic for sign in -->
+    <script>
+      document.getElementById('show-signin-password').addEventListener('change', function() {
+        const pwd = document.getElementById('signin-password');
+        pwd.type = this.checked ? 'text' : 'password';
       });
     </script>
   </body>
