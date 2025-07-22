@@ -423,7 +423,7 @@
           Transform your Excel experience with AI-powered automation. Create formulas, analyze data, and generate insights using simple natural language commands.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a href="#" onclick="openSignUpModal(); return false;" class="inline-flex items-center px-8 py-3 bg-green-600 text-white font-bold rounded-full text-lg hover:bg-green-700 transition shadow-lg transition-transform duration-200 hover:scale-105">
+          <a id="start-free-trial-btn" href="#" class="inline-flex items-center px-8 py-3 bg-green-600 text-white font-bold rounded-full text-lg hover:bg-green-700 transition shadow-lg transition-transform duration-200 hover:scale-105">
             Start Free Trial
           </a>
         </div>
@@ -1473,7 +1473,7 @@
           Experience the power of AI in Excel. Boost your productivity and streamline your workflow with our Fast Excel Assistant AI.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-          <a href="#" onclick="openSignUpModal(); return false;" class="px-8 py-4 bg-green-600 text-white font-bold rounded-full text-lg hover:bg-green-700 transition shadow-lg transition-transform duration-200 hover:scale-105 flex items-center gap-1">
+          <a id="get-started-btn" href="#" class="px-8 py-4 bg-green-600 text-white font-bold rounded-full text-lg hover:bg-green-700 transition shadow-lg transition-transform duration-200 hover:scale-105 flex items-center gap-1">
             Get Started
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -2443,6 +2443,41 @@
       document.getElementById('toggle-signin-password').addEventListener('click', function() {
         togglePasswordVisibility('signin-password', 'signin-password-eye');
       });
+    </script>
+    <script>
+      // Button behavior for Start Free Trial and Get Started/Subscribe
+      function updateCtaButtons() {
+        var token = localStorage.getItem('token');
+        var user = localStorage.getItem('user');
+        var isSignedIn = !!(token && user);
+        var trialBtn = document.getElementById('start-free-trial-btn');
+        var getStartedBtn = document.getElementById('get-started-btn');
+        if (trialBtn) {
+          if (isSignedIn) {
+            trialBtn.textContent = 'Start Free Trial';
+            trialBtn.setAttribute('href', '#pricing');
+            trialBtn.onclick = null;
+          } else {
+            trialBtn.textContent = 'Start Free Trial';
+            trialBtn.setAttribute('href', '#');
+            trialBtn.onclick = function(e) { e.preventDefault(); openSignUpModal(); return false; };
+          }
+        }
+        if (getStartedBtn) {
+          if (isSignedIn) {
+            getStartedBtn.innerHTML = 'Subscribe <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+            getStartedBtn.setAttribute('href', '#pricing');
+            getStartedBtn.onclick = null;
+          } else {
+            getStartedBtn.innerHTML = 'Get Started <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+            getStartedBtn.setAttribute('href', '#');
+            getStartedBtn.onclick = function(e) { e.preventDefault(); openSignUpModal(); return false; };
+          }
+        }
+      }
+      document.addEventListener('DOMContentLoaded', updateCtaButtons);
+      // Also call after sign in
+      window.updateCtaButtons = updateCtaButtons;
     </script>
   </body>
 </html>   
