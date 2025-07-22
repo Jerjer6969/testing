@@ -1770,24 +1770,32 @@
         const { error } = await window.supabase.auth.signIn({ provider: 'google' });
         if (error) {
           alert('Google sign-in failed: ' + error.message);
+        } else {
+          if (typeof updateCtaButtons === 'function') updateCtaButtons();
         }
       }
       async function signInWithMicrosoft() {
         const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
         if (error) {
           alert('Microsoft sign-in failed: ' + error.message);
+        } else {
+          if (typeof updateCtaButtons === 'function') updateCtaButtons();
         }
       }
       async function signUpWithGoogle() {
         const { error } = await window.supabase.auth.signIn({ provider: 'google' });
         if (error) {
           alert('Google sign-up failed: ' + error.message);
+        } else {
+          if (typeof updateCtaButtons === 'function') updateCtaButtons();
         }
       }
       async function signUpWithMicrosoft() {
         const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
         if (error) {
           alert('Microsoft sign-up failed: ' + error.message);
+        } else {
+          if (typeof updateCtaButtons === 'function') updateCtaButtons();
         }
       }
 
@@ -2172,24 +2180,32 @@
           const { error } = await window.supabase.auth.signIn({ provider: 'google' });
           if (error) {
             alert('Google sign-in failed: ' + error.message);
+          } else {
+            if (typeof updateCtaButtons === 'function') updateCtaButtons();
           }
         }
         async function signInWithMicrosoft() {
           const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
           if (error) {
             alert('Microsoft sign-in failed: ' + error.message);
+          } else {
+            if (typeof updateCtaButtons === 'function') updateCtaButtons();
           }
         }
         async function signUpWithGoogle() {
           const { error } = await window.supabase.auth.signIn({ provider: 'google' });
           if (error) {
             alert('Google sign-up failed: ' + error.message);
+          } else {
+            if (typeof updateCtaButtons === 'function') updateCtaButtons();
           }
         }
         async function signUpWithMicrosoft() {
           const { error } = await window.supabase.auth.signIn({ provider: 'azure' });
           if (error) {
             alert('Microsoft sign-up failed: ' + error.message);
+          } else {
+            if (typeof updateCtaButtons === 'function') updateCtaButtons();
           }
         }
 
