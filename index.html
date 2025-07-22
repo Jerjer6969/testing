@@ -819,15 +819,16 @@
             </div>
             <!-- Content area for GIF/video -->
             <div class="w-full flex justify-center items-center p-12">
-              <div class="w-[900px] h-[480px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-lg font-semibold border border-gray-200">
-                GIF/Video Placeholder
+              <div class="w-[900px] h-[480px] bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-lg font-semibold border border-gray-200" id="feature-demo-content">
+                <img id="natural-language-gif" src="https://cdn.discordapp.com/attachments/1391473482801483849/1397012866732921004/IMG_2504.gif?ex=68802d1e&is=687edb9e&hm=25fced2238412e56f5bf449d9ac37f08c9052efb4a990658d62945ea936fdef0&" alt="Natural Language Demo" style="display:none;max-width:100%;max-height:100%;border-radius:1rem;" />
+                <span id="feature-demo-placeholder">GIF/Video Placeholder</span>
               </div>
             </div>
           </div>
         </div>
       </div>
       <script>
-        document.querySelectorAll('.feature-tab').forEach((tab) => {
+        document.querySelectorAll('.feature-tab').forEach((tab, idx) => {
           tab.addEventListener('click', function() {
             document.querySelectorAll('.feature-tab').forEach(t => t.classList.remove('border-green-500', 'ring-2', 'ring-green-200', 'selected'));
             tab.classList.add('border-green-500', 'ring-2', 'ring-green-200', 'selected');
@@ -836,7 +837,16 @@
             if (label) {
               document.getElementById('feature-demo-title').textContent = label.textContent;
             }
-            // Optionally update GIF/video placeholder src here with similar fade effect
+            // Show GIF only for Natural Language (first feature)
+            var gif = document.getElementById('natural-language-gif');
+            var placeholder = document.getElementById('feature-demo-placeholder');
+            if (idx === 0) {
+              if (gif) gif.style.display = 'block';
+              if (placeholder) placeholder.style.display = 'none';
+            } else {
+              if (gif) gif.style.display = 'none';
+              if (placeholder) placeholder.style.display = 'block';
+            }
           });
         });
         // Set first feature as selected by default
